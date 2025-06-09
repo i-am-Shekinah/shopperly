@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Categories{% endblock %}
+{% block header %} <h1>Shop Categories</h1> {% endblock %}
+
+{% block content %}
+  <ul>
+    {% for category in categories %}
+      <li>
+        <a href="{% url 'shop:category_detail' category.slug %}">{{ category.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if categories %}
+    <p>Total Categories: {{ categories|length }}</p>
+  {% else %}
+    <p>No categories available.</p>
+  {% endif %}
+{% endblock %}

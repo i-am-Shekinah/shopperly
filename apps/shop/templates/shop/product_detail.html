@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block header %}
+  <h1>{{ product.name }}</h1>
+{% endblock %}
+
+{% block content %}
+  <p>{{ product.description }}</p>
+  <p>Price: ${{ product.price }}</p>
+  <p>Category: <a href="{% url 'shop:category_detail' product.category.slug %}">{{ product.category.name }}</a></p>
+
+  <h2>Related Products</h2>
+  <ul>
+    {% for related_product in related_products %}
+      <li>
+        <a href="{% url 'shop:product_detail' related_product.id related_product.slug %}">{{ related_product.name }}</a> - ${{ related_product.price }}
+      </li>
+    {% endfor %}
+{% endblock %}

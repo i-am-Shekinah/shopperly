@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block header %}
+  <h1>{{ category.name }}</h1>
+{% endblock %}
+
+{% block content %}
+  <p>{{ category.description }}</p>
+
+  <ul>
+    {% for product in products %}
+      <li>
+        <a href="{% url 'shop:product_detail' product.id product.slug %}">{{ product.name }}</a> - ${{ product.price }}
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if products %}
+    <p>Total Products: {{ products|length }}</p>
+  {% else %}
+    <p>No products available in this category.</p>
+  {% endif %}
+{% endblock %}
