@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Add Product{% endblock %}
+
+{% block header %} Add New Product {% endblock %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Product</button>
+  </form>
+
+  {% if form.errors %}
+    <div class="error">
+      <p>Please correct the errors below:</p>
+      <ul>
+        {% for field in form %}
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endblock %}

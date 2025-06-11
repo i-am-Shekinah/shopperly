@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+*.egg
+*.log
+
+# Environments
+venv/
+env/
+ENV/
+.venv/
+.Python
+
+# Django Migrations 
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Media uploads
+/media/
+
+# Static files collected for production
+/staticfiles/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Git
+*.orig
+*.swp
+
+# Test coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# SQLite 
+*.sqlite3
+
+# Environment/config files
+.env
+.env.*

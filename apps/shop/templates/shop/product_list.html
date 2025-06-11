@@ -18,4 +18,6 @@
   {% else %}
     <p>No products available.</p>
   {% endif %}
+
+  <button type="button"><a href="{% url 'shop:product_create' %}">Add new product</a></button>
 {% endblock content %}

@@ -40,5 +40,10 @@ class Product(models.Model):
       models.Index(fields=['id', 'slug'], name='product_id_slug_idx'),
     ]
 
+  def save(self, *args, **kwargs):
+    if not self.slug:
+      self.slug = slugify(self.name)
+    super().save(*args, **kwargs)
+
   def __str__(self):
     return self.name
