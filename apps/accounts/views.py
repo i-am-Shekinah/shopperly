@@ -14,6 +14,10 @@ class UserLoginView(LoginView):
   template_name = 'accounts/login.html'
   redirect_authenticated_user = True
 
+  def form_valid(self, form):
+    response = super().form_valid(form)
+    session_cart = self.request.session.get('cart', {})
+
   def get_success_url(self):
     return reverse_lazy('home')  
   

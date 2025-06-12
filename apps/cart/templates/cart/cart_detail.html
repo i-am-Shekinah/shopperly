@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Card Detail{% endblock %}
+
+{% block header %}
+    <h1>Cart Detail</h1>
+    <p>Here you can view the details of your cart.</p>
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        {% if cart_items %}
+            <ul>
+                {% for item in cart_items %}
+                    <li>
+                        {{ item.product.name }} - {{ item.quantity }} x ${{ item.product.price }}
+                        {% comment %} <form method="post" action="{% url 'cart:remove_item' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Remove</button>
+                        </form> {% endcomment %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <p>Total: ${{ total_price }}</p>
+        {% else %}
+            <p>Your cart is empty.</p>
+        {% endif %}
+    </div>
+
+    <div class="checkout">
+        {% comment %} <a href="{% url 'cart:checkout' %}" class="btn btn-primary">Proceed to Checkout</a> {% endcomment %}
+    </div>
+{% endblock %}

@@ -23,6 +23,12 @@
   {% else %}
     <p>No image available.</p>
   {% endif %}
+
+  <form method="POST" action="{% url "cart:add_to_cart" product.id %}">
+    {% csrf_token %}
+    <input type="number" name="quantity" value="1" min="1" required>
+    <button type="submit">Add to Cart</button>
+  </form>
   <p>Category: <a href="{% url 'shop:category_detail' product.category.slug %}">{{ product.category.name }}</a></p>
 
   <h2>Related Products</h2>
