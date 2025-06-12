@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Homepage</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Welcome to Shopperly!</h1>
     {% if user.is_authenticated %}
-        <p>Hello, {{ user.username }}!</p>
-        <p>You are logged in.</p>
-        <br>
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+    <p>Hello, {{ user.username }}!</p>
+    <p>You are logged in.</p>
+    <br />
+    <form method="POST" action="{% url 'accounts:logout' %}">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
     {% else %}
-        <p>Please <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to continue.</p>
+    <p>
+      Please <a href="{% url 'accounts:login' %}">log in</a> or
+      <a href="{% url 'accounts:register' %}">register</a> to continue.
+    </p>
     {% endif %}
-</body>
+  </body>
 </html>

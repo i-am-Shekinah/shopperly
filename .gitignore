@@ -22,6 +22,8 @@ ENV/
 
 # Media uploads
 /media/
+/products/*
+
 
 # Static files collected for production
 /staticfiles/

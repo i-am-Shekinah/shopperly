@@ -3,7 +3,8 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Category, Product
 from django.urls import reverse
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import redirect_to_login
 
 class CategoryListView(ListView):
   model = Category
@@ -39,7 +40,6 @@ class ProductDetailView(DetailView):
     return Product.objects.filter(
       id=self.kwargs.get('id'),
       slug=self.kwargs.get('slug'),
-      # image=self.kwargs.get('image', None),
       is_available=True
       ).select_related('category')
   
@@ -49,18 +49,28 @@ class ProductDetailView(DetailView):
     return context
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
   model = Product
   template_name = 'shop/product_form.html'
   fields = ['name', 'description', 'price', 'category', 'image', 'stock', 'is_available']
   success_url = '/shop/products/'
 
+  def test_func(self):
+    return self.request.user.is_authenticated and ((self.request.user.is_staff) or (self.request.user.role == 'seller'))
+  
+  def handle_no_permission(self):
+    if self.request.user.is_authenticated:
+      return super().handle_no_permission()
+    else:
+      return redirect_to_login(self.request.get_full_path())
+
   def form_valid(self, form):
     form.instance.is_available = True
+    form.instance.seller = self.request.user
     return super().form_valid(form)
   
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
   model = Product
   template_name = 'shop/product_form.html'
   fields = ['name', 'description', 'price', 'category', 'image', 'stock', 'is_available']
@@ -70,11 +80,29 @@ class ProductUpdateView(UpdateView):
       'id': self.object.id,
       'slug': self.object.slug
     })
+  
+  def test_func(self):
+    return self.request.user.is_authenticated and ((self.request.user == self.get_object().seller) or self.request.user.is_staff)
+  
+  def handle_no_permission(self):
+    if self.request.user.is_authenticated:
+      return super().handle_no_permission()
+    else:
+      return redirect_to_login(self.request.get_full_path())
+  
 
-
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
   model = Product
   template_name = 'shop/product_confirm_delete.html'
   
   def get_success_url(self):
     return reverse('shop:product_list')
+  
+  def test_func(self):
+    return self.request.user.is_authenticated and ((self.request.user == self.get_object().seller) or self.request.user.is_staff)
+  
+  def handle_no_permission(self):
+    if self.request.user.is_authenticated:
+      return super().handle_no_permission()
+    else:
+      return redirect_to_login(self.request.get_full_path())

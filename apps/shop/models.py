@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings
 
 class Category(models.Model):
   name = models.CharField(max_length=100, unique=True)
@@ -29,6 +30,7 @@ class Product(models.Model):
   stock = models.PositiveIntegerField(default=0)
   is_available = models.BooleanField(default=True)
   category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+  seller = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='products', on_delete=models.CASCADE)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 

@@ -19,5 +19,9 @@
     <p>No products available.</p>
   {% endif %}
 
-  <button type="button"><a href="{% url 'shop:product_create' %}">Add new product</a></button>
+  {% if request.user.is_authenticated %}
+    {% if  request.user.is_staff or request.user.role == 'seller' %}
+      <button type="button"><a href="{% url 'shop:product_create' %}">Add new product</a></button>
+    {% endif %}
+  {% endif %}
 {% endblock content %}

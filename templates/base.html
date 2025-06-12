@@ -7,6 +7,16 @@
 <body>
     <header>
         <!-- Navigation or logo can go here -->
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.username }}!</p>
+            <form method="POST" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'accounts:login' %}">Login</a>
+            <a href="{% url 'accounts:register' %}">Register</a>
+        {% endif %}
         {% block header %}
         {% endblock %}
     </header>
